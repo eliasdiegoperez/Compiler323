@@ -74,7 +74,7 @@ void syntax::lexAdv()
 		index++;
 		if (printSwitch)
 		{
-			fout << "Token: " << lex.tokens[index].token << "\t Lexeme: " << lex.tokens[index].lexeme << "\r\n";
+			fout << "\r\n" << "Token: " << lex.tokens[index].token << "\t Lexeme: " << lex.tokens[index].lexeme << "\r\n";
 		}	
 	}
 }
@@ -99,12 +99,6 @@ void syntax::Rat18s()
 	{
 		fout << "\r\n Syntax Error! expecting %% after " << lex.tokens[index].lexeme << " on line " << lex.tokens[index].lineNumber  << "\r\n"  << "\r\n";
 		return;
-	}
-	if (index < lex.tokens.size())
-	{
-		lexAdv();
-		Rat18s();
-		cout << "infinite loop\n";
 	}
 }
 
@@ -349,7 +343,7 @@ void syntax::Statement_list()
 		fout << "<Statement List>::= <Statement> | <Statement> <Statement List>\r\n";
 	}
 	while (lex.tokens[index].lexeme == "if" || lex.tokens[index].lexeme == "return" || lex.tokens[index].lexeme == "put" || lex.tokens[index].lexeme == "get"
-		|| lex.tokens[index].lexeme == "while" || lex.tokens[index].lexeme == "\tIdentifier")
+		|| lex.tokens[index].lexeme == "while" || lex.tokens[index].token == "\tIdentifier")
 	{
 		Statement();
 	}
@@ -414,7 +408,7 @@ void syntax::Assign()
 			}
 		}
 		else {
-			fout << "\r\n Syntax Error, expecting ':=' before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
+			fout << "\r\n Syntax Error, expecting '=' before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
 			return;
 		}
 	}
@@ -618,8 +612,11 @@ void syntax::Expression()
 	{
 		fout << "<Expression>::= <Expression> + <Term> | <Expression> - <Term> | <Term>\r\n";
 	}
+	// Remove Left recursive
 	Term();
 	LRExpression();
+	//Term();
+	//LRExpression();
 }
 
 void syntax::LRExpression()
@@ -634,11 +631,17 @@ void syntax::LRExpression()
 		Term();
 		LRExpression();
 	}
-	else if (lex.tokens[index].lexeme == "\tNot Accepted")
+	else if (lex.tokens[index].token == "\tIdentifier" || lex.tokens[index].token == "int" || lex.tokens[index].lexeme == "(" ||
+		lex.tokens[index].token == "real" || lex.tokens[index].token == "true" || lex.tokens[index].token == "false")
 	{
-		fout << "\r\n Syntax error, expecting '+', '-', or nothing before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
-		return;
+		lexAdv();
+		Term();
 	}
+	//else if (lex.tokens[index].token == "\tNot Accepted")
+	//{
+	//	//fout << "\r\n Syntax error, expecting '+', '-', or nothing before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
+	//	//return;
+	//}
 	else
 	{
 		Empty();
@@ -653,6 +656,9 @@ void syntax::Term()
 	}
 	Factor();
 	LRTerm();
+	//LRTerm();
+	//Factor();
+	
 }
 
 void syntax::LRTerm()
@@ -667,11 +673,18 @@ void syntax::LRTerm()
 		Factor();
 		LRTerm();
 	}
-	else if (lex.tokens[index].lexeme == "\tNot Accepted")
+	else if (lex.tokens[index].token == "\tIdentifier" || lex.tokens[index].token == "int" || lex.tokens[index].lexeme == "(" ||
+		lex.tokens[index].token == "real" || lex.tokens[index].token == "true" || lex.tokens[index].token == "false")
 	{
-		fout << "\r\n Syntax error, expecting '*', '/', or nothing before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
-		return;
+		lexAdv();
+		//Term();
+		Factor();
 	}
+	//else if (lex.tokens[index].token == "\tNot Accepted")
+	//{
+	//	fout << "\r\n Syntax error, expecting '*', '/', or nothing before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
+	//	return;
+	//}
 	else
 	{
 		Empty();
@@ -689,14 +702,15 @@ void syntax::Factor()
 		lexAdv();
 		Primary();
 	}
-	else if (lex.tokens[index].lexeme == "\tNot Accepted")
-	{
-		Primary();
-	}
+	//else if (lex.tokens[index].token == "\tNot Accepted")
+	//{
+	//	Primary();
+	//}
 	else
 	{
-		fout << "\r\n Syntax error, expecting something before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
-		return;
+		Primary();
+		//fout << "\r\n Syntax error, expecting something before '" << lex.tokens[index].lexeme << "' on line " << lex.tokens[index].lineNumber  << "\r\n";
+		//return;
 	}
 }
 

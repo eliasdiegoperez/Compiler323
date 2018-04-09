@@ -3,46 +3,131 @@ Token: 	Keyword	 Lexeme: function
 	<Opt Function Definition> ::= <Function Definitions> | <Empty>
 	<Function Definitions> ::= <Function> | <Function> <Function Definitions>
 	<Function> ::= function <Identifier> [ <Opt Paramenter List> ] <Opt Declaration List> <fout>
-Token: 	Identifier	 Lexeme: hello$
+
+Token: 	Identifier	 Lexeme: sum$
+
 Token: 	Seperator	 Lexeme: [
-Token: 	Seperator	 Lexeme: ]
+
+Token: 	Identifier	 Lexeme: a
 	<Opt Parameter List> ::= <Parameter List> | <Empty>
-<Empty>::= epsilon
+	<Parameter List> ::= <Parameter> | <Parameter>, <Parameter List>
+	<Parameter> ::= <IDs> : <Qualifier>
+	<IDs> ::= <Identifier> | <Identifier>, <IDs>
+
+Token: 	Seperator	 Lexeme: :
+
+Token: 	Keyword	 Lexeme: int
+	<Qualifier> ::= int | boolean | real
+
+Token: 	Seperator	 Lexeme: ,
+
+Token: 	Identifier	 Lexeme: b
+	<Parameter List> ::= <Parameter> | <Parameter>, <Parameter List>
+	<Parameter> ::= <IDs> : <Qualifier>
+	<IDs> ::= <Identifier> | <Identifier>, <IDs>
+
+Token: 	Seperator	 Lexeme: :
+
+Token: 	Keyword	 Lexeme: int
+	<Qualifier> ::= int | boolean | real
+
+Token: 	Seperator	 Lexeme: ]
+
 Token: 	Seperator	 Lexeme: {
 	<Opt Declaration List> ::= <Declaration List> | <Empty>
 <Empty>::= epsilon
 	<fout> ::= { <Statement List> }
+
 Token: 	Keyword	 Lexeme: return
 <Statement List>::= <Statement> | <Statement> <Statement List>
 	<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Write> | <Scan> | <While>
 	<Return> ::= return; | return <Expression>;
+
+Token: 	Identifier	 Lexeme: a
+<Expression>::= <Expression> + <Term> | <Expression> - <Term> | <Term>
+<Term>::= <Term> * <Factor> | <Term> / <Factor> | <Factor
+><Factor>::= - <Primary> | <Primary>
+<Primary>::= <Identifer> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false
+
+Token: 	Not Accepted	 Lexeme: +
+<LRTerm>::= * <Factor> <LRTerm> | / <Factor> <LRTerm> | <Empty>
+<Empty>::= epsilon
+<LRExpression>::= + <Term> <LRExpression> | - <Term> <LRExpression> | <Empty
+>
+Token: 	Identifier	 Lexeme: b
+<Term>::= <Term> * <Factor> | <Term> / <Factor> | <Factor
+><Factor>::= - <Primary> | <Primary>
+<Primary>::= <Identifer> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false
+
 Token: 	Seperator	 Lexeme: ;
+<LRTerm>::= * <Factor> <LRTerm> | / <Factor> <LRTerm> | <Empty>
+<Empty>::= epsilon
+<LRExpression>::= + <Term> <LRExpression> | - <Term> <LRExpression> | <Empty
+><Empty>::= epsilon
+
 Token: 	Seperator	 Lexeme: }
-Token: 	Seperator	 Lexeme: %%
-Token: 	Keyword	 Lexeme: int
-	<Opt Declaration List> ::= <Declaration List> | <Empty>
-	<Declaration List> ::= <Declaration>; | <Declaration> ; <Declaration List>
-	<Declaration> ::= <Qualifier> <IDs>
-	<Qualifier> ::= int | boolean | real
-Token: 	Identifier	 Lexeme: low
-	<IDs> ::= <Identifier> | <Identifier>, <IDs>
-Token: 	Seperator	 Lexeme: ,
-Token: 	Identifier	 Lexeme: high
-	<IDs> ::= <Identifier> | <Identifier>, <IDs>
-Token: 	Seperator	 Lexeme: ,
-Token: 	Identifier	 Lexeme: step$
-	<IDs> ::= <Identifier> | <Identifier>, <IDs>
-Token: 	Seperator	 Lexeme: ;
+
 Token: 	Keyword	 Lexeme: function
+	<Function> ::= function <Identifier> [ <Opt Paramenter List> ] <Opt Declaration List> <fout>
+
+Token: 	Identifier	 Lexeme: swap
+
+Token: 	Seperator	 Lexeme: [
+
+Token: 	Identifier	 Lexeme: value
+	<Opt Parameter List> ::= <Parameter List> | <Empty>
+	<Parameter List> ::= <Parameter> | <Parameter>, <Parameter List>
+	<Parameter> ::= <IDs> : <Qualifier>
+	<IDs> ::= <Identifier> | <Identifier>, <IDs>
+
+Token: 	Seperator	 Lexeme: :
+
+Token: 	Keyword	 Lexeme: boolean
+	<Qualifier> ::= int | boolean | real
+
+Token: 	Seperator	 Lexeme: ]
+
+Token: 	Seperator	 Lexeme: {
+	<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty>::= epsilon
+	<fout> ::= { <Statement List> }
+
+Token: 	Keyword	 Lexeme: if
 <Statement List>::= <Statement> | <Statement> <Statement List>
-Finished
-Token: 	Identifier	 Lexeme: sum$
-Token: 	Identifier	 Lexeme: sum$
-	<Rat18S>::= <Opt Function> %% <Opt Declaration List> <Statement List>
-	<Opt Function Definition> ::= <Function Definitions> | <Empty>
+	<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Write> | <Scan> | <While>
+	<If> ::= if (<Condition>) <Statement> endif | if (<Condition>) <Statement> else <Statement> endif
 
- Syntax Error, expecting 'function' or '%%' before 'sum$' on line 7
+Token: 	Seperator	 Lexeme: (
 
+Token: 	Identifier	 Lexeme: value
+<Condition>::= <Expression> <Relop> <Expression>
+<Expression>::= <Expression> + <Term> | <Expression> - <Term> | <Term>
+<Term>::= <Term> * <Factor> | <Term> / <Factor> | <Factor
+><Factor>::= - <Primary> | <Primary>
+<Primary>::= <Identifer> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false
 
- Syntax Error! expecting %% after sum$ on line 7
+Token: 	Not Accepted	 Lexeme: ==
+<LRTerm>::= * <Factor> <LRTerm> | / <Factor> <LRTerm> | <Empty>
+<Empty>::= epsilon
+<LRExpression>::= + <Term> <LRExpression> | - <Term> <LRExpression> | <Empty
+><Empty>::= epsilon
+<Relop>::= == | ^= | > | < | => | =< 
+
+Token: 	Keyword	 Lexeme: true
+<Expression>::= <Expression> + <Term> | <Expression> - <Term> | <Term>
+<Term>::= <Term> * <Factor> | <Term> / <Factor> | <Factor
+><Factor>::= - <Primary> | <Primary>
+<Primary>::= <Identifer> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false
+
+ Syntax error, expecting <identifier>, <integer> or <Expression> before 'true' on line 5
+<LRTerm>::= * <Factor> <LRTerm> | / <Factor> <LRTerm> | <Empty>
+<Empty>::= epsilon
+<LRExpression>::= + <Term> <LRExpression> | - <Term> <LRExpression> | <Empty
+><Empty>::= epsilon
+
+ Syntax Error, expecting ) after <Condition> on line 5
+
+ Syntax Error, expecting '}' before 'true' on line 5
+
+ Syntax Error! expecting %% after true on line 5
 

@@ -17,7 +17,7 @@
 #include <vector>
 using namespace std;
 
-//ostream fout;
+//ofstream fout("LA.txt", std::ofstream::binary);
 
 struct token_type {
     string token;

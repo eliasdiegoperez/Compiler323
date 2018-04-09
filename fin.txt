@@ -1,28 +1,35 @@
-function hello$ []
-{
-return;
+function sum$ [a:int, b:int ] {
+    return a + b;
 }
-%%
-int low,high,step$;
-function sum$ [num1$:int, num2$:int]
-{
-return num1$ + num2$;
+function swap [value:boolean] {
+    if ( value == true ) return false;
+    else return true; endif
 }
-%%
-	put sum(sum$[3,5]);
-	
-function product$ [num1$:int, num2$:int]
-{
-return num1$ * num2$;
+
+function findMax [a: int, b: int] {
+    if ( a > b ) return a;
+    else return b; endif
 }
+
 %%
-put product(product$[3,5]);
-function quotient$ [num1$:int, num2$:int]
-{
-			num1$/num2;
+int a,b; !declarations!
+boolean val;
+int blah;
+
+put ( sum$ (a,b) );
+put ( a - b );
+
+val = false;
+
+blah = 5.5;
+while ( blah > 3 ) {
+    put ( blah );
+    blah = blah - 1;
 }
-%%
-			int sum, product, quotient$;
-			put sum(sum$[3,5]);
-			put product(product$[3,5]);
-			put quotient(quotient$[3,5]);
+
+if ( a == 4 ) put ( a ); endif
+if ( b => 3 ) put ( b ); endif
+if ( c =< 2 ) put ( c ); endif
+if ( d ^= 1 ) put ( 9001 ); endif
+if ( e > 0 ) put (true);
+else put (false); endif
