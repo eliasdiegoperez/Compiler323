@@ -2,9 +2,7 @@
 //  Syntax.h
 //  Compiler
 //
-//  Created by Elias Perez on 4/8/18.
-//  Copyright © 2018 CPSC 323. All rights reserved.
-//
+
 
 #ifndef Syntax_h
 #define Syntax_h
@@ -58,11 +56,12 @@ bool printSwitch = true;
 
 
 void Syntax::lexAdv() {
-    if (tokenCounter < tokenList.size())
-    {
+   
+    if (tokenCounter < tokenList.size()) {
+        
         currentToken = tokenList[tokenCounter];
-        if (printSwitch)
-        {
+        if (printSwitch) {
+            
             fout << "\nToken: " << left << setw(20) << currentToken.token
             << left << setw(8) << "Lexeme: " << left << setw(20) << currentToken.lexeme << endl;
         }
@@ -71,27 +70,30 @@ void Syntax::lexAdv() {
 }
 
 void Syntax::Rat18S() {
+    
     lexAdv();
+    
     if (printSwitch) {
         fout << "\t<Rat18S> ::= <Opt Function Definitions>\n\t\t\t\t %% <Opt Declaration List> <Statement List> \n";
     }
     
     OptFuncDef();
-    if (currentToken.lexeme == "%%"){
+    
+    if (currentToken.lexeme == "%%") {
         lexAdv();
         OptDecList();
         StatementList();
         fout << "The End" << endl;
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting this %% after '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\n<><><> Syntax Error, expecting this %% before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
 
 
-void Syntax::OptFuncDef()
-{
+void Syntax::OptFuncDef() {
+    
     if (printSwitch) {
         fout << "\t<Opt Function Definition> ::= <Function Definitions> | <Empty>\n";
     }
@@ -119,6 +121,7 @@ void Syntax::FuncDef() {
 }
 
 void Syntax::Func() {
+
     if (printSwitch) {
         fout << "\t<Function> ::= function <Identifier> [ <Opt Paramenter List> ] <Opt Declaration List> <fout>\n";
     }
@@ -151,6 +154,7 @@ void Syntax::Func() {
 }
 
 void Syntax::OptParamList() {
+ 
     if (printSwitch)
         fout << "\t<Opt Parameter List> ::= <Parameter List> | <Empty>\n";
     
@@ -167,6 +171,7 @@ void Syntax::OptParamList() {
 }
 
 void Syntax::ParamList() {
+  
     if (printSwitch)
         fout << "\t<Parameter List> ::= <Parameter> | <Parameter>, <Parameter List>\n";
     
@@ -181,6 +186,7 @@ void Syntax::ParamList() {
 }
 
 void Syntax::Parameter() {
+    
     if (printSwitch)
         fout << "\t<Parameter> ::= <IDs> : <Qualifier>\n";
     
@@ -195,22 +201,23 @@ void Syntax::Parameter() {
     }
 }
 
-void Syntax::Qualifier()
-{
-    if (printSwitch)
-        fout << "\t<Qualifier> ::= integer | boolean | real\n";
+void Syntax::Qualifier() {
     
-    if (currentToken.lexeme == "integer" || currentToken.lexeme == "true"
+    if (printSwitch)
+        fout << "\t<Qualifier> ::= int | boolean | real\n";
+    
+    if (currentToken.lexeme == "int" || currentToken.lexeme == "true"
         || currentToken.lexeme == "false" || currentToken.lexeme == "real" || currentToken.lexeme == "boolean")
         lexAdv();
     else
     {
-        fout << "\n<><><> Syntax Error, expecting 'integer', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\n<><><> Syntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
 
 void Syntax::Body() {
+    
     if (printSwitch)
         fout << "\t<fout> ::= { <Statement List> }\n";
     
@@ -230,8 +237,8 @@ void Syntax::Body() {
     }
 }
 
-void Syntax::OptDecList()
-{
+void Syntax::OptDecList() {
+    
     if (printSwitch) {
         fout << "\t<Opt Declaration List> ::= <Declaration List> | <Empty>\n";
     }
@@ -239,17 +246,17 @@ void Syntax::OptDecList()
     if (currentToken.lexeme == "{") {
         Empty();
     }
-    else if (currentToken.lexeme == "integer" || currentToken.lexeme == "boolean" || currentToken.lexeme == "real") {
+    else if (currentToken.lexeme == "int" || currentToken.lexeme == "boolean" || currentToken.lexeme == "real") {
         DecList();
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting 'integer', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line: " << currentToken.linenum;
+        fout << "\n<><><> Syntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line: " << currentToken.linenum;
         exit(1);
     }
 }
 
-void Syntax::DecList()
-{
+void Syntax::DecList() {
+    
     if (printSwitch) {
         fout << "\t<Declaration List> ::= <Declaration>; | <Declaration> ; <Declaration List>\n";
     }
@@ -257,7 +264,7 @@ void Syntax::DecList()
     Declaration();
     if (currentToken.lexeme == ";") {
         lexAdv();
-        if (currentToken.lexeme == "integer" || currentToken.lexeme == "boolean" || currentToken.lexeme == "real") {
+        if (currentToken.lexeme == "int" || currentToken.lexeme == "boolean" || currentToken.lexeme == "real") {
             DecList();
         }
     }
@@ -267,8 +274,8 @@ void Syntax::DecList()
     }
 }
 
-void Syntax::Declaration()
-{
+void Syntax::Declaration() {
+    
     if (printSwitch)
         fout << "\t<Declaration> ::= <Qualifier> <IDs>\n";
     
@@ -276,8 +283,8 @@ void Syntax::Declaration()
     IDs();
 }
 
-void Syntax::IDs()
-{
+void Syntax::IDs() {
+    
     if (printSwitch) {
         fout << "\t<IDs> ::= <Identifier> | <Identifier>, <IDs>\n";
     }
@@ -299,16 +306,18 @@ void Syntax::IDs()
 }
 
 void Syntax::StatementList() {
+    
     if (printSwitch) {
         fout << "\t<Statement List> ::= <Statement> | <Statement> <Statement List>\n";
     }
     while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "print"
-           || currentToken.lexeme == "read" || currentToken.lexeme == "while" || currentToken.token == "IDENTIFIER") {
+           || currentToken.lexeme == "read" || currentToken.lexeme == "while" || currentToken.token == "Identifier") {
         Statement();
     }
 }
 
 void Syntax::Statement() {
+    
     if (printSwitch)
         fout << "\t<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Write> | <Scan> | <While>\n";
     
@@ -333,6 +342,7 @@ void Syntax::Statement() {
 }
 
 void Syntax::Compound() {
+    
     if (printSwitch)
         fout << "\t<Compound> ::= {<Statement List>}\n";
     
@@ -346,6 +356,7 @@ void Syntax::Compound() {
 }
 
 void Syntax::Assign() {
+    
     if (printSwitch)
         fout << "\t<Assign> ::= <Identifier> := <Expression>;\n";
     
@@ -369,6 +380,7 @@ void Syntax::Assign() {
 }
 
 void Syntax::If() {
+    
     if (printSwitch)
         fout << "\t<If> ::= if (<Condition>) <Statement> endif | if (<Condition>) <Statement> else <Statement> endif\n";
     if (currentToken.lexeme == "if") {
@@ -411,6 +423,7 @@ void Syntax::If() {
 }
 
 void Syntax::Return() {
+    
     if (printSwitch)
         fout << "\t<Return> ::= return; | return <Expression>;\n";
     
@@ -430,8 +443,8 @@ void Syntax::Return() {
     }
 }
 
-void Syntax::Print()
-{
+void Syntax::Print() {
+    
     if (printSwitch)
         fout << "\t<Print> ::= print (<Expressions>);\n";
     
@@ -460,6 +473,7 @@ void Syntax::Print()
 }
 
 void Syntax::Scan() {
+    
     if (printSwitch)
         fout << "\t<Scan> ::= get (<IDs>);\n";
     
@@ -487,8 +501,8 @@ void Syntax::Scan() {
     }
 }
 
-void Syntax::While()
-{
+void Syntax::While() {
+    
     if (printSwitch)
         fout << "\t<While> ::= while (<Condition>) <Statement>\n";
     
@@ -516,8 +530,8 @@ void Syntax::Condition() {
     
 }
 
-void Syntax::Relop()
-{
+void Syntax::Relop() {
+    
     if (printSwitch)
         fout << "\t<Relop> ::= == | ^= | > | < | => | =<\n";
     
@@ -534,6 +548,7 @@ void Syntax::Relop()
 }
 
 void Syntax::Expression() {
+    
     if (printSwitch)
         fout << "\t<Expression> ::= <Term> <Expression Prime>\n";
     
@@ -542,6 +557,7 @@ void Syntax::Expression() {
 }
 
 void Syntax::ExpressionPrime() {
+   
     if (printSwitch)
         fout << "\t<Expression Prime> ::= + <Term> <Expression Prime> | - <Term> <Expression Prime> | <Empty>\n";
     
@@ -561,8 +577,8 @@ void Syntax::ExpressionPrime() {
     }
 }
 
-void Syntax::Term()
-{
+void Syntax::Term() {
+    
     if (printSwitch)
         fout << "\t<Term> ::= <Factor> <Term Prime>\n";
     
@@ -570,29 +586,27 @@ void Syntax::Term()
     TermPrime();
 }
 
-void Syntax::TermPrime()
-{
+void Syntax::TermPrime() {
+    
     if (printSwitch)
         fout <<  "\t<Term Prime> ::= * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>\n";
     
-    if (currentToken.lexeme == "*" || currentToken.lexeme == "/")
-    {
+    if (currentToken.lexeme == "*" || currentToken.lexeme == "/") {
         lexAdv();
         Factor();
         TermPrime();
     }
-    else if (currentToken.token == "Unknown")
-    {
+    else if (currentToken.token == "Unknown") {
         fout << "\n<><><> Syntax Error, expecting '*', '/', or 'Empty' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
-    else
-    {
+    else {
         Empty();
     }
 }
 
 void Syntax::Factor() {
+    
     if (printSwitch)
         fout << "\t<Factor> ::= - <Primary> | <Primary>\n";
     
@@ -612,6 +626,7 @@ void Syntax::Factor() {
 }
 
 void Syntax::Primary() {
+    
     if (printSwitch)
         fout << "\t<Primary> ::= <Identifier> | <Integer> | <Identifier> [<IDs>] | (<Expression>) | <Real> | true | false\n";
     
@@ -660,8 +675,7 @@ void Syntax::Primary() {
     }
 }
 
-void Syntax::Empty()
-{
+void Syntax::Empty() {
     if (printSwitch)
         fout << "\t<Empty> ::= epsilon\n";
     
