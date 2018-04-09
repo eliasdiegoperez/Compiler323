@@ -3,7 +3,6 @@
 //  Compiler
 //
 
-
 #ifndef Syntax_h
 #define Syntax_h
 
@@ -83,7 +82,7 @@ void Syntax::Rat18S() {
         lexAdv();
         OptDecList();
         StatementList();
-        fout << "The End" << endl;
+        fout << "Finished" << endl;
     }
     else {
         fout << "\n<><><> Syntax Error, expecting this %% before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
@@ -294,7 +293,7 @@ void Syntax::IDs() {
             lexAdv();
             IDs();
         }
-        else if (currentToken.token == "IDENTIFIER") {
+        else if (currentToken.token == "Identifier") {
             fout << "\n<><><> Syntax Error, expecting ',' between multiple identifiers on line " << currentToken.linenum;
             exit(1);
         }
@@ -310,8 +309,9 @@ void Syntax::StatementList() {
     if (printSwitch) {
         fout << "\t<Statement List> ::= <Statement> | <Statement> <Statement List>\n";
     }
-    while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "print"
-           || currentToken.lexeme == "read" || currentToken.lexeme == "while" || currentToken.token == "Identifier") {
+    while (currentToken.lexeme == "if" || currentToken.lexeme == "return" || currentToken.lexeme == "put"
+           || currentToken.lexeme == "get" || currentToken.lexeme == "while" || currentToken.token == "Identifier"
+           || currentToken.lexeme == "function") {
         Statement();
     }
 }
@@ -319,7 +319,7 @@ void Syntax::StatementList() {
 void Syntax::Statement() {
     
     if (printSwitch)
-        fout << "\t<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Write> | <Scan> | <While>\n";
+        fout << "\t<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>\n";
     
     if (currentToken.lexeme == "{")
         Compound();
@@ -329,10 +329,12 @@ void Syntax::Statement() {
         If();
     else if (currentToken.lexeme == "return")
         Return();
-    else if (currentToken.lexeme == "print")
+    else if (currentToken.lexeme == "put")
         Print();
-    else if (currentToken.lexeme == "scan")
+    else if (currentToken.lexeme == "get")
         Scan();
+    else if (currentToken.lexeme =="function")
+        Func();
     else if (currentToken.lexeme == "while")
         While();
     else {
@@ -360,7 +362,7 @@ void Syntax::Assign() {
     if (printSwitch)
         fout << "\t<Assign> ::= <Identifier> := <Expression>;\n";
     
-    if (currentToken.token == "IDENTIFIER") {
+    if (currentToken.token == "Identifier") {
         lexAdv();
         if (currentToken.lexeme == ":=") {
             lexAdv();
@@ -650,7 +652,7 @@ void Syntax::Primary() {
         
     }
     
-    else if (currentToken.token == "INTEGER" || currentToken.token == "REAL") {
+    else if (currentToken.token == "int" || currentToken.token == "real") {
         lexAdv();
     }
     
