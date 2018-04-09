@@ -1,7 +1,10 @@
 //
 //  Syntax.h
 //  Compiler
-
+//
+//  Created by Elias Perez on 4/8/18.
+//  Copyright © 2018 CPSC 323. All rights reserved.
+//
 
 #ifndef Syntax_h
 #define Syntax_h
@@ -11,7 +14,7 @@
 #include "lexer.h"
 
 class Syntax {
-private:
+public:
     void Rat18S();
     void OptFuncDef();
     void FuncDef();
@@ -45,14 +48,12 @@ private:
     void Empty();
     void lexAdv();
     
-public:
-    
-    int tokenCounter = 0;
-    vector<TokenType> tokenList;                  //vector that holds all tokens once they have been read in initially
-    TokenType currentToken;
-    bool printSwitch = true;
 };
 
+int tokenCounter = 0;
+vector<TokenType> tokenList;                  //vector that holds all tokens once they have been read in initially
+TokenType currentToken;
+bool printSwitch = true;
 
 
 
