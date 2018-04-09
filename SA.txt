@@ -1,0 +1,48 @@
+Token: 	Keyword	 Lexeme: function
+	<Rat18S>::= <Opt Function> %% <Opt Declaration List> <Statement List>
+	<Opt Function Definition> ::= <Function Definitions> | <Empty>
+	<Function Definitions> ::= <Function> | <Function> <Function Definitions>
+	<Function> ::= function <Identifier> [ <Opt Paramenter List> ] <Opt Declaration List> <fout>
+Token: 	Identifier	 Lexeme: hello$
+Token: 	Seperator	 Lexeme: [
+Token: 	Seperator	 Lexeme: ]
+	<Opt Parameter List> ::= <Parameter List> | <Empty>
+<Empty>::= epsilon
+Token: 	Seperator	 Lexeme: {
+	<Opt Declaration List> ::= <Declaration List> | <Empty>
+<Empty>::= epsilon
+	<fout> ::= { <Statement List> }
+Token: 	Keyword	 Lexeme: return
+<Statement List>::= <Statement> | <Statement> <Statement List>
+	<Statement> ::= <Compound> | <Assign> | <If> | <Return> | <Write> | <Scan> | <While>
+	<Return> ::= return; | return <Expression>;
+Token: 	Seperator	 Lexeme: ;
+Token: 	Seperator	 Lexeme: }
+Token: 	Seperator	 Lexeme: %%
+Token: 	Keyword	 Lexeme: int
+	<Opt Declaration List> ::= <Declaration List> | <Empty>
+	<Declaration List> ::= <Declaration>; | <Declaration> ; <Declaration List>
+	<Declaration> ::= <Qualifier> <IDs>
+	<Qualifier> ::= int | boolean | real
+Token: 	Identifier	 Lexeme: low
+	<IDs> ::= <Identifier> | <Identifier>, <IDs>
+Token: 	Seperator	 Lexeme: ,
+Token: 	Identifier	 Lexeme: high
+	<IDs> ::= <Identifier> | <Identifier>, <IDs>
+Token: 	Seperator	 Lexeme: ,
+Token: 	Identifier	 Lexeme: step$
+	<IDs> ::= <Identifier> | <Identifier>, <IDs>
+Token: 	Seperator	 Lexeme: ;
+Token: 	Keyword	 Lexeme: function
+<Statement List>::= <Statement> | <Statement> <Statement List>
+Finished
+Token: 	Identifier	 Lexeme: sum$
+Token: 	Identifier	 Lexeme: sum$
+	<Rat18S>::= <Opt Function> %% <Opt Declaration List> <Statement List>
+	<Opt Function Definition> ::= <Function Definitions> | <Empty>
+
+ Syntax Error, expecting 'function' or '%%' before 'sum$' on line 7
+
+
+ Syntax Error! expecting %% after sum$ on line 7
+

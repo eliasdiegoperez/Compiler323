@@ -1,0 +1,27 @@
+function hello$ []
+{
+           return;
+}
+%%
+int low,high,step$;
+function sum$ [num1:int, num2:int]
+{
+	return num1 + num2;
+}
+%%
+	put sum(sum$[3,5]);
+function product$ [num1:int, num2:int]
+{
+	return num1 * num2;
+}
+%%
+put product(product$[3,5]);
+function quotient$ [num1:int, num2:int]
+{
+	num1/num2;
+}
+%%
+	int sum, product, quotient$;
+	put sum(sum$[3,5]);
+	put product(product$[3,5]);
+	put quotient(quotient$[3,5]);
