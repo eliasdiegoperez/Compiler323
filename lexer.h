@@ -2,18 +2,13 @@
 //  lexer.h
 //  Compiler
 //
-//  Created by Elias Perez on 4/5/18.
-//  Copyright © 2018 CPSC 323. All rights reserved.
-//
 
 #ifndef lexer_h
 #define lexer_h
-
 #define SEPARATOR_SIZE 9
 #define OPERATER_SIZE 7
 #define RELOP_SIZE 4
 #define KEYWORD_SIZE 14
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -24,8 +19,7 @@ using namespace std;
 ifstream fin;
 ofstream fout;
 
-struct TokenType
-{
+struct TokenType {
     string token;
     string lexeme;
     int linenum;
@@ -56,7 +50,6 @@ private:
         { 1, 8, 1, 1 }     // 8
     };
 
-
     char separators[SEPARATOR_SIZE] = {'(', ')', '[',']', ':', ';', '{', '}', ','};
     char operators[OPERATER_SIZE] = {'=', '+', '-', '/', '*', '<', '>'};
     string rel_opert[RELOP_SIZE] = {"==", "^=", "=>", "=<"};
@@ -83,12 +76,11 @@ void Lexer::is_bang(string &curr_line, char &curr_char, int &string_counter, int
                 endComment = true;
                 curr_line.erase(0, string_counter+1);
             }
-            
         }
         else {
             getline(fin, curr_line);
             lineNum++;
-            string_counter = 0;
+            string_counter = -1;
         }
     }
 }
@@ -140,8 +132,6 @@ bool Lexer::is_rel_operat(char curr_char, char next_char) {
                 i++;
         }
     }
-    
-    
     return found;
 }
 
