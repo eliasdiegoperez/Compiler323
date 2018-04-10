@@ -48,7 +48,7 @@ public:
 };
 
 int tokenCounter = 0;
-vector<TokenType> tokenList;                  //vector that holds all tokens once they have been read in initially
+vector<TokenType> tokenList;                  
 TokenType currentToken;
 bool printSwitch = true;
 
@@ -85,7 +85,7 @@ void Syntax::Rat18S() {
         fout << "Finished" << endl;
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting this %% before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting this %% before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -103,7 +103,7 @@ void Syntax::OptFuncDef() {
         Empty();
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting 'function' or '%%' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting 'function' or '%%' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
     
@@ -137,17 +137,17 @@ void Syntax::Func() {
                 Body();
             }
             else {
-                fout << "\n<><><> Syntax Error, expecting ']' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+                fout << "\nSyntax Error, expecting ']' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
                 exit(1);
             }
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting '[' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting '[' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting <Identifier> before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting <Identifier> before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -164,7 +164,7 @@ void Syntax::OptParamList() {
         Empty();
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting <Identifier> before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting <Identifier> before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -195,7 +195,7 @@ void Syntax::Parameter() {
         Qualifier();
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting ':' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting ':' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -208,9 +208,8 @@ void Syntax::Qualifier() {
     if (currentToken.lexeme == "int" || currentToken.lexeme == "true"
         || currentToken.lexeme == "false" || currentToken.lexeme == "real" || currentToken.lexeme == "boolean")
         lexAdv();
-    else
-    {
-        fout << "\n<><><> Syntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+    else {
+        fout << "\nSyntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -226,12 +225,12 @@ void Syntax::Body() {
         if (currentToken.lexeme == "}")
             lexAdv();
         else {
-            fout << "\n<><><> Syntax Error, expecting '}' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting '}' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting '{' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting '{' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -249,7 +248,7 @@ void Syntax::OptDecList() {
         DecList();
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line: " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line: " << currentToken.linenum;
         exit(1);
     }
 }
@@ -268,7 +267,7 @@ void Syntax::DecList() {
         }
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting ';' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting ';' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -294,12 +293,12 @@ void Syntax::IDs() {
             IDs();
         }
         else if (currentToken.token == "Identifier") {
-            fout << "\n<><><> Syntax Error, expecting ',' between multiple identifiers on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting ',' between multiple identifiers on line " << currentToken.linenum;
             exit(1);
         }
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting <Identifier> before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting <Identifier> before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -338,7 +337,7 @@ void Syntax::Statement() {
     else if (currentToken.lexeme == "while")
         While();
     else {
-        fout << "\n<><><> Syntax Error, expecting proper '<Statement>' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting proper '<Statement>' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -360,22 +359,22 @@ void Syntax::Compound() {
 void Syntax::Assign() {
     
     if (printSwitch)
-        fout << "\t<Assign> ::= <Identifier> := <Expression>;\n";
+        fout << "\t<Assign> ::= <Identifier> = <Expression>;\n";
     
     if (currentToken.token == "Identifier") {
         lexAdv();
-        if (currentToken.lexeme == ":=") {
+        if (currentToken.lexeme == "=") {
             lexAdv();
             Expression();
             if (currentToken.lexeme == ";")
                 lexAdv();
             else {
-                fout << "\n<><><> <Assign> Syntax Error";
+                fout << "\n<Assign> Syntax Error";
                 exit(1);
             }
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting ':=' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting '=' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
@@ -403,22 +402,22 @@ void Syntax::If() {
                         lexAdv();
                     }
                     else {
-                        fout << "\n<><><> Syntax Error, expecting 'endif' on line " << currentToken.linenum;
+                        fout << "\nSyntax Error, expecting 'endif' on line " << currentToken.linenum;
                         exit(1);
                     }
                 }
                 else {
-                    fout << "\n<><><> Syntax Error, expecting 'endif' or 'else' on line " << currentToken.linenum;
+                    fout << "\nSyntax Error, expecting 'endif' or 'else' on line " << currentToken.linenum;
                     exit(1);
                 }
             }
             else {
-                fout << "\n<><><> Syntax Error, expecting ) after <Condition> on line " << currentToken.linenum;
+                fout << "\nSyntax Error, expecting ) after <Condition> on line " << currentToken.linenum;
                 exit(1);
             }
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting ( on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting ( on line " << currentToken.linenum;
             exit(1);
         }
     }
@@ -439,7 +438,7 @@ void Syntax::Return() {
         if (currentToken.lexeme == ";")
             lexAdv();
         else {
-            fout << "\n<><><> Syntax Error, expecting ';' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting ';' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
@@ -459,17 +458,17 @@ void Syntax::Print() {
             if (currentToken.lexeme == ";")
                 lexAdv();
             else {
-                fout << "\n<><><> Syntax Error, expecting ';' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+                fout << "\nSyntax Error, expecting ';' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
                 exit(1);
             }
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting ')' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting ')' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting '(' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting '(' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -488,17 +487,17 @@ void Syntax::Scan() {
             if (currentToken.lexeme == ";")
                 lexAdv();
             else {
-                fout << "\n<><><> Syntax Error. Expecting ';' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+                fout << "\nSyntax Error. Expecting ';' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
                 exit(1);
             }
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting ')' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting ')' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting '(' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting '(' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -544,7 +543,7 @@ void Syntax::Relop() {
     }
     else
     {
-        fout << "\n<><><> Syntax error, expecting valid comparison operator before " << currentToken.lexeme << " on line " << currentToken.linenum;
+        fout << "\nSyntax error, expecting valid comparison operator before " << currentToken.lexeme << " on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -570,11 +569,10 @@ void Syntax::ExpressionPrime() {
         ExpressionPrime();
     }
     else if (currentToken.token == "Unknown") {
-        fout << "\n<><><> Syntax error, expecting '+', '-', or nothing before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax error, expecting '+', '-', or nothing before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
-    else
-    {
+    else {
         Empty();
     }
 }
@@ -599,7 +597,7 @@ void Syntax::TermPrime() {
         TermPrime();
     }
     else if (currentToken.token == "Unknown") {
-        fout << "\n<><><> Syntax Error, expecting '*', '/', or 'Empty' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting '*', '/', or 'Empty' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
     else {
@@ -622,7 +620,7 @@ void Syntax::Factor() {
     }
     
     else {
-        fout << "\n<><><> Syntax Error, expecting something different before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting something different before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -641,18 +639,17 @@ void Syntax::Primary() {
                 lexAdv();
             }
             else {
-                fout << "\n<><><> Syntax Error, expecting ']' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+                fout << "\nSyntax Error, expecting ']' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
                 exit(1);
             }
         }
         else {
-            //If current token is not '['.  Do nothing here.
-            //It means this function is running <Primary> ::= <Identifier> instead of <Primary> ::= <Identifier> [<IDs>]
+            // Do nothing
         }
         
     }
     
-    else if (currentToken.token == "int" || currentToken.token == "real") {
+    else if (currentToken.token == "Integer" || currentToken.token == "Real") {
         lexAdv();
     }
     
@@ -663,7 +660,7 @@ void Syntax::Primary() {
             lexAdv();
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting ')' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\nSyntax Error, expecting ')' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
@@ -672,7 +669,7 @@ void Syntax::Primary() {
         lexAdv();
     }
     else {
-        fout << "\n<><><> Syntax Error, expecting '<Identifer>', '<Qualifier>' or '<Expression>' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+        fout << "\nSyntax Error, expecting '<Identifer>', '<Qualifier>' or '<Expression>' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
 }
@@ -682,8 +679,6 @@ void Syntax::Empty() {
         fout << "\t<Empty> ::= epsilon\n";
     
 }
-
-
 
 
 
