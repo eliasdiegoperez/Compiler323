@@ -14,18 +14,7 @@ function findMax [a: int, b: int] {
 %%
 int a,b; !declarations!
 boolean val;
-int blah;
 
-	put ( sum$ );
-	put ( a - b ); 
-
-val = false;
-
-blah = 5.5;
-while ( blah > 3 ) {
-    put ( blah );
-    blah = blah - 1;
-}
 
 if ( a == 4 ) put ( a ); endif
 if ( b => 3 ) put ( b ); endif
