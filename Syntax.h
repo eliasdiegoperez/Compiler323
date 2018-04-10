@@ -208,8 +208,7 @@ void Syntax::Qualifier() {
     if (currentToken.lexeme == "int" || currentToken.lexeme == "true"
         || currentToken.lexeme == "false" || currentToken.lexeme == "real" || currentToken.lexeme == "boolean")
         lexAdv();
-    else
-    {
+    else {
         fout << "\n<><><> Syntax Error, expecting 'int', 'boolean', or 'real' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
@@ -360,11 +359,11 @@ void Syntax::Compound() {
 void Syntax::Assign() {
     
     if (printSwitch)
-        fout << "\t<Assign> ::= <Identifier> := <Expression>;\n";
+        fout << "\t<Assign> ::= <Identifier> = <Expression>;\n";
     
     if (currentToken.token == "Identifier") {
         lexAdv();
-        if (currentToken.lexeme == ":=") {
+        if (currentToken.lexeme == "=") {
             lexAdv();
             Expression();
             if (currentToken.lexeme == ";")
@@ -375,7 +374,7 @@ void Syntax::Assign() {
             }
         }
         else {
-            fout << "\n<><><> Syntax Error, expecting ':=' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
+            fout << "\n<><><> Syntax Error, expecting '=' before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
             exit(1);
         }
     }
@@ -573,8 +572,7 @@ void Syntax::ExpressionPrime() {
         fout << "\n<><><> Syntax error, expecting '+', '-', or nothing before '" << currentToken.lexeme << "' on line " << currentToken.linenum;
         exit(1);
     }
-    else
-    {
+    else {
         Empty();
     }
 }
@@ -652,7 +650,7 @@ void Syntax::Primary() {
         
     }
     
-    else if (currentToken.token == "int" || currentToken.token == "real") {
+    else if (currentToken.token == "Integer" || currentToken.token == "Real") {
         lexAdv();
     }
     
