@@ -1,12 +1,12 @@
-function getLit [x: real, b: real] {
+function getLit [b:real] {
   if (x > h) 
       return x;
   else 
       return h;
   endif
-  
-  while (idk => idc) {
-    put(me);
-    get(you);
-  }
 }
+%%  
+  
+int a;
+real c;
+boolean foolean;
