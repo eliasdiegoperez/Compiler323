@@ -1,1 +1,16 @@
+function findMax [a: int, b: int] {
+    if ( a == b ) return a;
+    else return b; endif
+}
 
+%%
+int a,b; !declarations!
+boolean val;
+
+
+if ( a == 4 ) put ( a ); endif
+if ( b => 3 ) put ( b ); endif
+if ( c =< 2 ) put ( c ); endif
+if ( d ^= 1 ) put ( 9001 ); endif
+if ( e > 0 ) put (true);
+else put (false); endif
