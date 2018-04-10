@@ -1,0 +1,12 @@
+function getLit [x: real, b: real] {
+  if (x > h) 
+      return x;
+  else 
+      return h;
+  endif
+  
+  while (idk => idc) {
+    put(me);
+    get(you);
+  }
+}
