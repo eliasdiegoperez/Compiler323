@@ -9,7 +9,7 @@ function swap [value:boolean] {
 
 get (a);
 
-if (x < y) {
+if (x < y) 
     return x;
-}
+endif
 
