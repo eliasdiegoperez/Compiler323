@@ -6,10 +6,9 @@ function swap [value:boolean] {
     else return true; endif
 }
 %%
-
+int a;
 get (a);
 
 if (x < y) 
     return x;
 endif
-
