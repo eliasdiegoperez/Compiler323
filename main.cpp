@@ -30,7 +30,7 @@ int main() {
     
     //Catch issue with opening file
     if (!fin) {
-        cout << "Error. Unable to read file." << endl;
+        cout << "Error. Cannot read file." << endl;
         return -1;
     }
     
