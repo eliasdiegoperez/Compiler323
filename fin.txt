@@ -5,5 +5,11 @@ function swap [value:boolean] {
     if ( value < true ) return false;
     else return true; endif
 }
+%%
 
+get (a);
+
+if (x < y) {
+    return x;
+}
 
