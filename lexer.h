@@ -1,4 +1,3 @@
-
 //
 //  lexer.h
 //  Compiler
@@ -9,6 +8,11 @@
 
 #ifndef lexer_h
 #define lexer_h
+
+#define SEPARATOR_SIZE 9
+#define OPERATER_SIZE 7
+#define RELOP_SIZE 4
+#define KEYWORD_SIZE 14
 
 #include <iostream>
 #include <fstream>
@@ -34,9 +38,9 @@ public:
     void push_token(TokenType&, int&, string&, char, char, vector<TokenType>&);
     void is_bang(string &line, char &curr_char, int &string_counter, int&);
     bool is_keyword(string);
-    bool is_seperator(char);
+    bool is_separator(char);
     bool is_rel_operat(char, char);
-    bool is_operator(char);
+    bool is_operator(char, char);
     
 private:
     int stateTable[9][4] {
@@ -53,10 +57,10 @@ private:
     };
 
 
-    char seperators[9] = {'(', ')', '[',']', ':', ';', '{', '}', '%'};
-    char operators[6] = {'+', '-', '/', '*', '<', '>'};
-    string rel_opert[4] = {"==", "^=", "=>", "=<"};
-    string keywords[14] = { "if", "while", "get", "for", "else",
+    char separators[SEPARATOR_SIZE] = {'(', ')', '[',']', ':', ';', '{', '}', ','};
+    char operators[OPERATER_SIZE] = {'=', '+', '-', '/', '*', '<', '>'};
+    string rel_opert[RELOP_SIZE] = {"==", "^=", "=>", "=<"};
+    string keywords[KEYWORD_SIZE] = { "if", "while", "get", "for", "else",
                             "int", "put", "endif", "return", "real",
                             "boolean", "true", "false", "function" };
 };
@@ -84,7 +88,7 @@ void Lexer::is_bang(string &curr_line, char &curr_char, int &string_counter, int
         else {
             getline(fin, curr_line);
             lineNum++;
-            string_counter = -1;
+            string_counter = 0;
         }
     }
 }
@@ -93,7 +97,7 @@ bool Lexer::is_keyword(string contestant) {
     
     bool found = false;
     int i = 0;
-    while(i < 14 && !found) {
+    while(i < KEYWORD_SIZE && !found) {
         if(keywords[i] == contestant) {
             found = true;
         }
@@ -103,12 +107,12 @@ bool Lexer::is_keyword(string contestant) {
     return found;
 }
 
-bool Lexer::is_seperator(char contestant) {
+bool Lexer::is_separator(char contestant) {
     
     bool found = false;
     int i = 0;
-    while(i < 8 && !found) {
-        if(seperators[i] == contestant) {
+    while(i < SEPARATOR_SIZE && !found) {
+        if(separators[i] == contestant) {
             found = true;
         }
         else
@@ -119,16 +123,17 @@ bool Lexer::is_seperator(char contestant) {
 
 bool Lexer::is_rel_operat(char curr_char, char next_char) {
     bool found = false;
-    string temp = " ";
+    string temp = "";
     temp += curr_char;
     temp += next_char;
-    int i = 0;
+    
     if (temp == "%%") {
         found = true;
     }
     else {
-        while (i < 4 && !found) {
-            if ( temp == rel_opert[i]) {
+        int i = 0;
+        while (i < RELOP_SIZE && !found) {
+            if (temp == rel_opert[i]) {
                 found = true;
             }
             else
@@ -140,13 +145,17 @@ bool Lexer::is_rel_operat(char curr_char, char next_char) {
     return found;
 }
 
-bool Lexer::is_operator(char contestant) {
+bool Lexer::is_operator(char contestant, char next_char) {
     
     bool found = false;
     int i = 0;
-    while(i < 4 && !found) {
+    while(i < OPERATER_SIZE && !found) {
         if(operators[i] == contestant) {
-            found = true;
+            if (is_rel_operat(contestant, next_char)) {
+                return false;
+            }
+            else
+                found = true;
         }
         else
             i++;
@@ -162,14 +171,18 @@ void Lexer::push_token(TokenType &access, int &state, string &curr_lex, char cur
             access.token = "Keyword";
             access.lexeme = curr_lex;
         }
-        else if (is_seperator(curr_char) || curr_lex == "%%") {
+        else if (is_separator(curr_char) || curr_lex == "%%") {
             
-            access.token = "Seperator";
+            access.token = "Separator";
             access.lexeme = curr_lex;
         }
-        else if (is_operator(curr_char) || curr_lex == "==" || curr_lex == "^="
+        else if (is_operator(curr_char, next_char) || curr_lex == "==" || curr_lex == "^="
                                         || curr_lex == "=<" || curr_lex == "=>") {
-            
+            if (is_rel_operat(curr_char, next_char)) {
+                curr_lex.clear();
+                curr_lex += curr_char;
+                curr_lex += next_char;
+            }
             access.token = "Operator";
             access.lexeme = curr_lex;
         }
@@ -194,6 +207,7 @@ void Lexer::push_token(TokenType &access, int &state, string &curr_lex, char cur
         access.token = "Unknown";
         access.lexeme = curr_lex;
     }
+    
     if (curr_lex != "") {
         tokens.push_back(access);
     }
@@ -216,6 +230,7 @@ vector<TokenType> Lexer::lexical(string curr_line, int &lineNum) {
     int i = 0;
     while (i < curr_line.length()) {
         
+        // get next char
         curr_char = curr_line[i];
         if (i != curr_line.length()) {
             next_char = curr_line[i+1];
@@ -227,9 +242,11 @@ vector<TokenType> Lexer::lexical(string curr_line, int &lineNum) {
             current_token += curr_char;
             current_token += next_char;
             push_token(access, state, current_token, curr_char, next_char, tokens);
+            i++;
         }
-        else if (is_seperator(curr_char) || is_operator(curr_char) || curr_char == '!') {
+        else if (is_separator(curr_char) || is_operator(curr_char, next_char) || curr_char == '!') {
             state = 4;
+            
             if (curr_char != '!') {
                 if (current_token == "") {
                     current_token += curr_char;
@@ -274,7 +291,7 @@ vector<TokenType> Lexer::lexical(string curr_line, int &lineNum) {
             current_token += curr_char;
             state = stateTable[row][column];
             
-            if (is_seperator(curr_line[i+1]) || is_operator(curr_line[i+1]) || curr_line[i+1] == '!' || isspace(curr_line[i+1])) {
+            if (is_separator(curr_line[i+1]) || is_operator(curr_line[i+1], next_char) || curr_line[i+1] == '!' || isspace(curr_line[i+1])) {
                 push_token(access, state, current_token, curr_char, next_char, tokens);
             }
             
