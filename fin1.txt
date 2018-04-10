@@ -1,1 +1,12 @@
+int blah;
 
+	put ( sum$ );
+	put ( a - b ); 
+
+val = false;
+
+blah = 5.5;
+while ( blah > 3 ) {
+    put ( blah );
+    blah = blah - 1;
+}
